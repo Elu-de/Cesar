@@ -15,7 +15,7 @@ def getMessageUser():
 
 
 def getKeyUser():
-    """Recover the user's input (a key(int))
+    """Recover the user's input
 
     Returns: a key as an int
     """
@@ -24,15 +24,26 @@ def getKeyUser():
     return key
 
 
+def alphabet():
+    """return a list of the alphabet's letter
+
+    Args : None
+    Return: List of string
+    """
+    listLetters = ["A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M", "N"
+        , "O", "P", "Q", "R", "S", "T", "U", "V", "W", "X", "Y", "Z"]
+    return listLetters
+
+
+
 def convertLetterToIndex(message):
-    """Recover the index of the message'letters
+    """Recover the index of the message's letters
 
     Args:
     message: the message given by the user
     Return: the index of the message's letter
     """
-    listLetters = ["A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M", "N"
-        , "O", "P", "Q", "R", "S", "T", "U", "V", "W", "X", "Y", "Z", ]
+    listLetters = alphabet()
     index = []
     for letterMessage in message:
         for letterList in listLetters:
@@ -41,33 +52,36 @@ def convertLetterToIndex(message):
     return index
 
 
-def newListLetter(key):
-    """Create a new list of letters with the key
+def transform_list_of_integer(index ,key):
+   """Convert the list of index(integer) into the new index (index + key)
+
+      Args:
+        index : index of the message's letter
+        key : key to encrypt
+      Returns:  list of integer (the new index of the letter's message)
+      """
+
+   listLetters = alphabet()
+   newIndex = []
+
+
+   for chiffre in index:
+       newIndex.append((chiffre+key)%len(listLetters))
+   return newIndex
+
+
+def encryptedMessage(newIndex):
+    """convert the new index into letter
 
     Args:
-       key : the int use to encrypt
-    Returns: a list of char
-    """
-
-    listLetters = ["A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M", "N"
-        , "O", "P", "Q", "R", "S", "T", "U", "V", "W", "X", "Y", "Z", ]
-
-    newList = []
-    newList = listLetters[key:] + listLetters[:key]
-    return newList
-
-
-def encryptedMessage(index, newList):
-    """convert the index into letter
-
-    Args:
-        index : the index of the message's letters
-        newListLetters : the new list of letters created with the key
+        newIndex : the new index of the message's letter
     Return: the encrypte message
     """
+
+    listLetter = alphabet()
     newMessage = []
-    for i in index:
-        newMessage.append(newList[i])
+    for i in newIndex:
+        newMessage.append(listLetter[i])
     return newMessage
 
 
@@ -89,9 +103,9 @@ key = getKeyUser()
 print(key)
 index = convertLetterToIndex(message)
 print(index)
-newList = newListLetter(key)
-print(newList)
-temp = encryptedMessage(index, newList)
+newIndex = transform_list_of_integer(index, key)
+print(newIndex)
+temp = encryptedMessage(newIndex)
 print(temp)
 temp = convert_list_to_string(temp)
 print(temp)
